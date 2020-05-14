@@ -122,7 +122,7 @@ if [[ $PLATFORMS_ARM == *"linux"* ]]; then
     --data ${MD5_SUM} \
     -H 'Content-Type: text/plain' \
     -H "Authorization: Bearer ${INPUT_GITHUB_TOKEN}" \
-    "${RELEASE_ASSETS_UPLOAD_URL}?name=${OUTPUT}-linux-arm64 .md5"
+    "${RELEASE_ASSETS_UPLOAD_URL}?name=${OUTPUT}-linux-arm64.md5"
   echo $?
 fi
 for GOOS in $PLATFORMS_ARM; do
