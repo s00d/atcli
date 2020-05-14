@@ -35,4 +35,4 @@ jobs:
           fi
       - name: BUILD
         run: |
-          sh ../build.sh
+          sh ./build.sh
