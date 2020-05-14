@@ -16,9 +16,11 @@ jobs:
         # goos: [linux, windows, darwin]
         # goarch: ["386", amd64]
     steps:
-      - name: Setup Go environment
-        uses: actions/setup-go@v2.0.3
-      - name: Get dependencies
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2.0.3
+        with:
+          go-version: '^1.14' # The Go version to download (if necessary) and use.
+      - name: BUILD
         run: |
           export PATH=$PATH:$(go env GOPATH)/bin
           # go get -v -t -d ./...
