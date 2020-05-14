@@ -18,7 +18,7 @@ jobs:
       with:
         go-version: ^1.13
       env:
-        GOPATH: $HOME/go
+        # GOPATH: $HOME/go
       id: go
 
     - name: Check out code into the Go module directory
@@ -26,6 +26,7 @@ jobs:
 
     - name: Get dependencies
       run: |
+        export PATH=$PATH:$(go env GOPATH)/bin
         # go get -v -t -d ./...
 
         if [ -f Gopkg.toml ]; then
