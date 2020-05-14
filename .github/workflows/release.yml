@@ -15,7 +15,9 @@ jobs:
         goos: [linux, windows, darwin]
         goarch: ["386", amd64]
     steps:
-      - uses: actions/setup-go@v2.0.3
+      - name: Setup Go environment
+        uses: actions/setup-go@v2.0.3
+      - name: Get dependencies
         run: |
           export PATH=$PATH:$(go env GOPATH)/bin
           # go get -v -t -d ./...
@@ -24,5 +26,7 @@ jobs:
               curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
               dep ensure
           fi
-      - uses: actions/checkout@v2
-      - uses: wangyoucao577/go-release-action@master
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: release
+        uses: wangyoucao577/go-release-action@master
