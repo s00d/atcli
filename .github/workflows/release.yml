@@ -26,7 +26,4 @@ jobs:
               curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
               dep ensure
           fi
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: release
-        uses: wangyoucao577/go-release-action@master
+          sh build.sh

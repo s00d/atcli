@@ -31,6 +31,9 @@
 # For 1.4 and earlier, see http://dave.cheney.net/2012/09/08/an-introduction-to-cross-compilation-with-go
 #
 
+RELEASE_ASSETS_UPLOAD_URL=$(cat ${GITHUB_EVENT_PATH} | jq -r .release.upload_url)
+RELEASE_ASSETS_UPLOAD_URL=${RELEASE_ASSETS_UPLOAD_URL%\{?name,label\}}
+
 # This PLATFORMS list is refreshed after every major Go release.
 # Though more platforms may be supported (freebsd/386), they have been removed
 # from the standard ports/downloads and therefore removed from this list.
@@ -76,6 +79,25 @@ for PLATFORM in $PLATFORMS; do
   CMD="GOOS=${GOOS} GOARCH=${GOARCH} go build -o ./build/${BIN_FILENAME} $@"
   echo "${CMD}"
   eval $CMD || FAILURES="${FAILURES} ${PLATFORM}"
+
+  curl \
+    --fail \
+    -X POST \
+    --data-binary ./build/${BIN_FILENAME} \
+    -H 'Content-Type: application/gzip' \
+    -H "Authorization: Bearer ${INPUT_GITHUB_TOKEN}" \
+    "${RELEASE_ASSETS_UPLOAD_URL}?name=${BIN_FILENAME}"
+  echo $?
+
+  MD5_SUM=$(md5sum ./build/${BIN_FILENAME} | cut -d ' ' -f 1)
+  curl \
+    --fail \
+    -X POST \
+    --data ${MD5_SUM} \
+    -H 'Content-Type: text/plain' \
+    -H "Authorization: Bearer ${INPUT_GITHUB_TOKEN}" \
+    "${RELEASE_ASSETS_UPLOAD_URL}?name=${BIN_FILENAME}.md5"
+  echo $?
 done
 
 # ARM builds
@@ -83,6 +105,25 @@ if [[ $PLATFORMS_ARM == *"linux"* ]]; then
   CMD="GOOS=linux GOARCH=arm64 go build -o ./build/${OUTPUT}-linux-arm64 $@"
   echo "${CMD}"
   eval $CMD || FAILURES="${FAILURES} ${PLATFORM}"
+
+  curl \
+    --fail \
+    -X POST \
+    --data-binary ./build/${OUTPUT}-linux-arm64 \
+    -H 'Content-Type: application/gzip' \
+    -H "Authorization: Bearer ${INPUT_GITHUB_TOKEN}" \
+    "${RELEASE_ASSETS_UPLOAD_URL}?name=${OUTPUT}-linux-arm64"
+  echo $?
+
+  MD5_SUM=$(md5sum ./build/${OUTPUT}-linux-arm64 | cut -d ' ' -f 1)
+    curl \
+    --fail \
+    -X POST \
+    --data ${MD5_SUM} \
+    -H 'Content-Type: text/plain' \
+    -H "Authorization: Bearer ${INPUT_GITHUB_TOKEN}" \
+    "${RELEASE_ASSETS_UPLOAD_URL}?name=${OUTPUT}-linux-arm64 .md5"
+  echo $?
 fi
 for GOOS in $PLATFORMS_ARM; do
   GOARCH="arm"
@@ -92,6 +133,25 @@ for GOOS in $PLATFORMS_ARM; do
     CMD="GOARM=${GOARM} GOOS=${GOOS} GOARCH=${GOARCH} go build -o ./build/${BIN_FILENAME} $@"
     echo "${CMD}"
     eval "${CMD}" || FAILURES="${FAILURES} ${GOOS}/${GOARCH}${GOARM}" 
+
+    curl \
+      --fail \
+      -X POST \
+      --data-binary ./build/${BIN_FILENAME} \
+      -H 'Content-Type: application/gzip' \
+      -H "Authorization: Bearer ${INPUT_GITHUB_TOKEN}" \
+      "${RELEASE_ASSETS_UPLOAD_URL}?name=${BIN_FILENAME}"
+    echo $?
+
+    MD5_SUM=$(md5sum ./build/${BIN_FILENAME} | cut -d ' ' -f 1)
+    curl \
+      --fail \
+      -X POST \
+      --data ${MD5_SUM} \
+      -H 'Content-Type: text/plain' \
+      -H "Authorization: Bearer ${INPUT_GITHUB_TOKEN}" \
+      "${RELEASE_ASSETS_UPLOAD_URL}?name=${BIN_FILENAME}.md5"
+    echo $?
   done
 done
 
