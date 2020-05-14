@@ -25,5 +25,5 @@ jobs:
             dep ensure
         fi
 
-    - name: Go Release Binaries
-      uses: wangyoucao577/go-release-action@v1.4
+    - name: Build
+      run: go build *.go 
