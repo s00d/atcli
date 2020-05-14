@@ -16,12 +16,18 @@ jobs:
         # goos: [linux, windows, darwin]
         # goarch: ["386", amd64]
     steps:
+      - name: INIT
+        run: |
+          cd $GOPATH
       - uses: actions/checkout@v2
+        with:
+          path: $GOPATH
       - uses: actions/setup-go@v2.0.3
         with:
           go-version: '^1.14' # The Go version to download (if necessary) and use.
       - name: BUILD
         run: |
+          echo $GOPATH/
           export PATH=$PATH:$(go env GOPATH)/bin
           # go get -v -t -d ./...
           if [ -f Gopkg.toml ]; then
