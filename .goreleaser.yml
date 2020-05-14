@@ -1,11 +1,13 @@
 # This is an example goreleaser.yaml file with some sane defaults.
 # Make sure to check the documentation at http://goreleaser.com
+project_name: atcli
 before:
   hooks:
     # You may remove this if you don't use go modules.
-    # - dep ensure
+    - go get -u github.com/golang/dep/cmd/dep
+    - dep ensure
     # you may remove this if you don't need go generate
-    - go generate ./...
+    # - go generate ./...
 builds:
 - env:
   - CGO_ENABLED=0
@@ -14,8 +16,6 @@ archives:
     darwin: Darwin
     linux: Linux
     windows: Windows
-    386: i386
-    amd64: x86_64
 checksum:
   name_template: 'checksums.txt'
 snapshot:
