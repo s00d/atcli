@@ -11,6 +11,9 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    env:
+      GOPATH: ${{ github.workspace }}
+      GO111MODULE: on
     steps:
     - name: Setup Go environment
       uses: actions/setup-go@v2.0.3
