@@ -79,18 +79,18 @@ zip -v ./build/${BIN_FILENAME}.zip "./build/${BIN_FILENAME}"
 curl \
   --fail \
   -X POST \
-  --data-binary ./build/${BIN_FILENAME}.zip \
+  --data-binary ./build/${BIN_FILENAME} \
   -H 'Content-Type: application/gzip' \
   -H "Authorization: Bearer ${GITHUB_TOKEN}" \
   "${RELEASE_ASSETS_UPLOAD_URL}?name=${BIN_FILENAME}"
 echo $?
 
-MD5_SUM=$(md5sum ./build/${BIN_FILENAME}.zip | cut -d ' ' -f 1)
+MD5_SUM=$(md5sum ./build/${BIN_FILENAME} | cut -d ' ' -f 1)
 curl \
   --fail \
   -X POST \
   --data ${MD5_SUM} \
   -H 'Content-Type: text/plain' \
   -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-  "${RELEASE_ASSETS_UPLOAD_URL}?name=${BIN_FILENAME}.zip.md5"
+  "${RELEASE_ASSETS_UPLOAD_URL}?name=${BIN_FILENAME}.md5"
 echo $?
