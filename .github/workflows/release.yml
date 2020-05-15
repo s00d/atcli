@@ -24,9 +24,9 @@ jobs:
         run: echo ::set-env name=BUILD_TIME::$(date)
       - name: Environment Printer
         uses: managedkaos/print-env@v1.0
-      - name: BUILD
-        run: |
-          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go install github.com/tarm/serial
+      # - name: BUILD
+      #   run: |
+      #     GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go install github.com/tarm/serial
       - uses: wangyoucao577/go-release-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
