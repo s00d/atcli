@@ -24,9 +24,9 @@ jobs:
         run: echo ::set-env name=BUILD_TIME::$(date)
       - name: Environment Printer
         uses: managedkaos/print-env@v1.0
-      # - name: BUILD
-      #   run: |
-      #     GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CGO_ENABLED=1 go install github.com/tarm/serial
+      - name: BUILD
+        run: |
+          CGO_ENABLED=1 go install github.com/tarm/serial
       - uses: wangyoucao577/go-release-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -34,7 +34,6 @@ jobs:
           goarch: ${{ matrix.goarch }}
           # project_path: "${{ env.CMD_PATH }}"
           build_flags: -v
-          pre_command: CGO_ENABLED=1 go install github.com/tarm/serial
           ldflags: -X "main.appVersion=${{ env.APP_VERSION }}" -X "main.buildTime=${{ env.BUILD_TIME }}" -X main.gitCommit=${{ github.sha }} -X main.gitRef=${{ github.ref }}
         env:
           GO111MODULE: on
