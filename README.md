@@ -1,6 +1,6 @@
 # AT CLI
 
-it small package by s00d for ad command
+it small package for ad command
 
 # USAGE
 
@@ -10,6 +10,7 @@ or
 
 build 
 
+install go
 ```sh
 sh build.sh
 ```
