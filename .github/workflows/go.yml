@@ -24,8 +24,8 @@ jobs:
 
     - name: Get dependencies
       run: |
-        export PATH=$PATH:$(go env GOPATH)/bin
+        # export PATH=$PATH:$(go env GOPATH)/bin
         go mod vendor
-        GO111MODULE=on go get -v -t -d ./...
+        GO111MODULE=on go get -v -t
     - name: Build
       run: go build *.go 
