@@ -15,6 +15,13 @@ jobs:
           goos: [linux]
           goarch: ["386"]
       steps:
+      - name: Pre Install
+        run: |
+          sudo apt-get install -y --no-install-recommends gcc-${GCC_V} g++-${GCC_V} gfortran-${GCC_V}
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_V} 100 \
+          --slave /usr/bin/g++ g++ /usr/bin/g++-${GCC_V} \
+          --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-${GCC_V} \
+          --slave /usr/bin/gcov gcov /usr/bin/gcov-${GCC_V}
       - name: Set up Go 1.x
         uses: actions/setup-go@v2
       - uses: actions/checkout@master
@@ -34,6 +41,13 @@ jobs:
         goos: [linux]
         goarch: [amd64]
     steps:
+    - name: Pre Install
+      run: |
+        sudo apt-get install -y --no-install-recommends gcc-${GCC_V} g++-${GCC_V} gfortran-${GCC_V}
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_V} 100 \
+        --slave /usr/bin/g++ g++ /usr/bin/g++-${GCC_V} \
+        --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-${GCC_V} \
+        --slave /usr/bin/gcov gcov /usr/bin/gcov-${GCC_V}
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
     - uses: actions/checkout@master
@@ -53,6 +67,13 @@ jobs:
         goos: [darwin]
         goarch: ["386"]
     steps:
+    - name: Pre Install
+      run: |
+        sudo apt-get install -y --no-install-recommends gcc-${GCC_V} g++-${GCC_V} gfortran-${GCC_V}
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_V} 100 \
+        --slave /usr/bin/g++ g++ /usr/bin/g++-${GCC_V} \
+        --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-${GCC_V} \
+        --slave /usr/bin/gcov gcov /usr/bin/gcov-${GCC_V}
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
     - uses: actions/checkout@master
@@ -72,6 +93,13 @@ jobs:
         goos: [darwin]
         goarch: [amd64]
     steps:
+    - name: Pre Install
+      run: |
+        sudo apt-get install -y --no-install-recommends gcc-${GCC_V} g++-${GCC_V} gfortran-${GCC_V}
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_V} 100 \
+        --slave /usr/bin/g++ g++ /usr/bin/g++-${GCC_V} \
+        --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-${GCC_V} \
+        --slave /usr/bin/gcov gcov /usr/bin/gcov-${GCC_V}
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
     - uses: actions/checkout@master
@@ -91,6 +119,13 @@ jobs:
         goos: [windows]
         goarch: ["386"]
     steps:
+    - name: Pre Install
+      run: |
+        sudo apt-get install -y --no-install-recommends gcc-${GCC_V} g++-${GCC_V} gfortran-${GCC_V}
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_V} 100 \
+        --slave /usr/bin/g++ g++ /usr/bin/g++-${GCC_V} \
+        --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-${GCC_V} \
+        --slave /usr/bin/gcov gcov /usr/bin/gcov-${GCC_V}
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
     - uses: actions/checkout@master
@@ -110,6 +145,13 @@ jobs:
         goos: [windows]
         goarch: [amd64]
     steps:
+    - name: Pre Install
+      run: |
+        sudo apt-get install -y --no-install-recommends gcc-${GCC_V} g++-${GCC_V} gfortran-${GCC_V}
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_V} 100 \
+        --slave /usr/bin/g++ g++ /usr/bin/g++-${GCC_V} \
+        --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-${GCC_V} \
+        --slave /usr/bin/gcov gcov /usr/bin/gcov-${GCC_V}
     - name: Set up Go 1.x
       uses: actions/setup-go@v2
     - uses: actions/checkout@master
