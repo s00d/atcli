@@ -68,8 +68,11 @@ CURRENT_DIRECTORY=${PWD##*/}
 OUTPUT=${SOURCE_FILE:-$CURRENT_DIRECTORY} # if no src file given, use current dir name
 
   
-BIN_FILENAME="${OUTPUT}-${GOOS}-${GOARCH}"
-if [[ "${GOOS}" == "windows" ]]; then BIN_FILENAME="${BIN_FILENAME}.exe"; fi
+BIN_FILENAME="${OUTPUT}-${GOOS}-${GOARCH}-${VERSION}"
+if [ ${GOOS} == 'windows' ]; then
+  BIN_FILENAME="${BIN_FILENAME}.exe"
+fi
+
 CMD="GOOS=${GOOS} GOARCH=${GOARCH} CGO_ENABLED=1 go build -o ./build/${BIN_FILENAME} $@"
 echo "${CMD}"
 eval $CMD || FAILURES="${FAILURES} ${PLATFORM}"
@@ -79,18 +82,18 @@ zip -v ./build/${BIN_FILENAME}.zip "./build/${BIN_FILENAME}"
 curl \
   --fail \
   -X POST \
-  --data-binary ./build/${BIN_FILENAME} \
+  --data-binary ./build/${BIN_FILENAME}.zip \
   -H 'Content-Type: application/gzip' \
   -H "Authorization: Bearer ${GITHUB_TOKEN}" \
   "${RELEASE_ASSETS_UPLOAD_URL}?name=${BIN_FILENAME}"
 echo $?
 
-MD5_SUM=$(md5sum ./build/${BIN_FILENAME} | cut -d ' ' -f 1)
+MD5_SUM=$(md5sum ./build/${BIN_FILENAME}.zip | cut -d ' ' -f 1)
 curl \
   --fail \
   -X POST \
   --data ${MD5_SUM} \
   -H 'Content-Type: text/plain' \
   -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-  "${RELEASE_ASSETS_UPLOAD_URL}?name=${BIN_FILENAME}.md5"
+  "${RELEASE_ASSETS_UPLOAD_URL}?name=${BIN_FILENAME}.zip.md5"
 echo $?
