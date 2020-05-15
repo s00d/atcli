@@ -23,6 +23,6 @@ jobs:
       run: |
         export PATH=$PATH:$(go env GOPATH)/bin
         go mod vendor
-        GO111MODULE=on go get -v -t -d ./...
+        go get
     - name: Build
       run: go build *.go 
