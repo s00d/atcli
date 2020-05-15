@@ -16,8 +16,6 @@ jobs:
         goos: [linux, windows, darwin]
         goarch: ["386", amd64]
     steps:
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v2
       - uses: actions/checkout@v2
 
       - name: Set APP_VERSION env
@@ -32,18 +30,18 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.goarch }}
-          project_path: "${{ env.CMD_PATH }}"
+          # project_path: "${{ env.CMD_PATH }}"
           build_flags: -v
           ldflags: -X "main.appVersion=${{ env.APP_VERSION }}" -X "main.buildTime=${{ env.BUILD_TIME }}" -X main.gitCommit=${{ github.sha }} -X main.gitRef=${{ github.ref }}
         env:
           CGO_ENABLED: 1
-  # release-linux-386:
+  # release:
   #     name: release linux/386
   #     runs-on: ubuntu-latest
   #     strategy:
   #       matrix:
-  #         goos: [linux]
-  #         goarch: ["386"]
+  #         goos: [linux, windows, darwin]
+  #         goarch: ["386", amd64]
   #     steps:
   #     - name: Pre Install
   #       run: |
@@ -57,8 +55,8 @@ jobs:
   #         GO111MODULE: on
   #         CGO_ENABLED: 1
   #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         GOARCH: "386"
-  #         GOOS: linux
+  #         GOARCH: ${{ matrix.goarch }}
+  #         GOOS: ${{ matrix.goos }}
   # release-linux-amd64:
   #   name: release linux/amd64
   #   runs-on: ubuntu-latest
