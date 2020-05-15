@@ -31,14 +31,13 @@
 # For 1.4 and earlier, see http://dave.cheney.net/2012/09/08/an-introduction-to-cross-compilation-with-go
 #
 
+RELEASE_ASSETS_UPLOAD_URL=$(cat ${GITHUB_EVENT_PATH} | jq -r .release.upload_url)
+RELEASE_ASSETS_UPLOAD_URL=${RELEASE_ASSETS_UPLOAD_URL%\{?name,label\}}
+
 # This PLATFORMS list is refreshed after every major Go release.
 # Though more platforms may be supported (freebsd/386), they have been removed
 # from the standard ports/downloads and therefore removed from this list.
 #
-PLATFORMS="darwin/amd64" # amd64 only as of go1.5
-PLATFORMS="$PLATFORMS windows/amd64 windows/386" # arm compilation not available for Windows
-PLATFORMS="$PLATFORMS linux/amd64 linux/386"
-PLATFORMS="$PLATFORMS linux/mips64 linux/mips64le" # experimental in go1.6
 
 # ARMBUILDS lists the platforms that are currently supported.  From this list
 # we generate the following architectures:
@@ -68,42 +67,30 @@ SOURCE_FILE=`echo $@ | sed 's/\.go//'`
 CURRENT_DIRECTORY=${PWD##*/}
 OUTPUT=${SOURCE_FILE:-$CURRENT_DIRECTORY} # if no src file given, use current dir name
 
-for PLATFORM in $PLATFORMS; do
-  GOOS=${PLATFORM%/*}
-  GOARCH=${PLATFORM#*/}
-  BIN_FILENAME="${OUTPUT}-${GOOS}-${GOARCH}"
-  if [[ "${GOOS}" == "windows" ]]; then BIN_FILENAME="${BIN_FILENAME}.exe"; fi
-  CMD="GOOS=${GOOS} GOARCH=${GOARCH} CGO_ENABLED=1 go build -o ./build/${BIN_FILENAME} $@"
-  echo "${CMD}"
-  eval $CMD || FAILURES="${FAILURES} ${PLATFORM}"
+  
+BIN_FILENAME="${OUTPUT}-${GOOS}-${GOARCH}"
+if [[ "${GOOS}" == "windows" ]]; then BIN_FILENAME="${BIN_FILENAME}.exe"; fi
+CMD="GOOS=${GOOS} GOARCH=${GOARCH} CGO_ENABLED=1 go build -o ./build/${BIN_FILENAME} $@"
+echo "${CMD}"
+eval $CMD || FAILURES="${FAILURES} ${PLATFORM}"
 
-  zip -v ./build/${BIN_FILENAME}.zip "./build/${BIN_FILENAME}"
-done
+zip -v ./build/${BIN_FILENAME}.zip "./build/${BIN_FILENAME}"
 
-# ARM builds
-if [[ $PLATFORMS_ARM == *"linux"* ]]; then 
-  CMD="GOOS=linux GOARCH=arm64 CGO_ENABLED=1 go build -o ./build/${OUTPUT}-linux-arm64 $@"
-  echo "${CMD}"
-  eval $CMD || FAILURES="${FAILURES} ${PLATFORM}"
+curl \
+  --fail \
+  -X POST \
+  --data-binary ./build/${BIN_FILENAME}.zip \
+  -H 'Content-Type: application/gzip' \
+  -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+  "${RELEASE_ASSETS_UPLOAD_URL}?name=${BIN_FILENAME}"
+echo $?
 
-  zip -v ./build/${OUTPUT}-linux-arm64.zip "./build/${OUTPUT}-linux-arm64"
-fi
-for GOOS in $PLATFORMS_ARM; do
-  GOARCH="arm"
-  # build for each ARM version
-  for GOARM in 7 6 5; do
-    BIN_FILENAME="${OUTPUT}-${GOOS}-${GOARCH}${GOARM}"
-    CMD="GOARM=${GOARM} GOOS=${GOOS} GOARCH=${GOARCH} CGO_ENABLED=1 go build -o ./build/${BIN_FILENAME} $@"
-    echo "${CMD}"
-    eval "${CMD}" || FAILURES="${FAILURES} ${GOOS}/${GOARCH}${GOARM}" 
-
-    zip -v ./build/${BIN_FILENAME}.zip "./build/${BIN_FILENAME}"
-  done
-done
-
-# eval errors
-if [[ "${FAILURES}" != "" ]]; then
-  echo ""
-  echo "${SCRIPT_NAME} failed on: ${FAILURES}"
-  exit 1
-fi
+MD5_SUM=$(md5sum ./build/${BIN_FILENAME}.zip | cut -d ' ' -f 1)
+curl \
+  --fail \
+  -X POST \
+  --data ${MD5_SUM} \
+  -H 'Content-Type: text/plain' \
+  -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+  "${RELEASE_ASSETS_UPLOAD_URL}?name=${BIN_FILENAME}.zip.md5"
+echo $?
