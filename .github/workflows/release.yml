@@ -33,7 +33,7 @@ jobs:
       - name: Get dependencies
         run: |
           go mod vendor
-          go get -v -t -d ./...
+          GO111MODULE=on go get -v -t -d ./...
       - name: BUILD
         run: |
           sh ./build.sh
