@@ -18,12 +18,7 @@ jobs:
     - name: Get dependencies
       run: |
         export PATH=$PATH:$(go env GOPATH)/bin
-        # go get -v -t -d ./...
-
-        if [ -f Gopkg.toml ]; then
-            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-            dep ensure
-        fi
-
-    # - name: Build
-    #   run: go build *.go 
+        go mod vendor
+        go get -v -t -d ./...
+    - name: Build
+      run: go build *.go 

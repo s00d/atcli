@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/AlecAivazis/survey"
+	"github.com/AlecAivazis/survey/v2"
 	"github.com/tarm/serial"
 	"go.bug.st/serial/enumerator"
 )
