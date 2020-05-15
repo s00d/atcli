@@ -35,9 +35,9 @@ jobs:
           ldflags: -X "main.appVersion=${{ env.APP_VERSION }}" -X "main.buildTime=${{ env.BUILD_TIME }}" -X main.gitCommit=${{ github.sha }} -X main.gitRef=${{ github.ref }}
         env:
           GO111MODULE: on
-          CGO_ENABLED: 1
+          # CGO_ENABLED: 1
   # release:
-  #     name: release linux/386
+  #     name: release
   #     runs-on: ubuntu-latest
   #     strategy:
   #       matrix:
