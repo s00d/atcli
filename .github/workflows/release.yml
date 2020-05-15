@@ -16,9 +16,6 @@ jobs:
         goos: [linux, windows, darwin]
         goarch: ["386", amd64]
     steps:
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v2
-        
       - uses: actions/checkout@v2
 
       - name: Set APP_VERSION env
