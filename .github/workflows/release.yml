@@ -1,7 +1,10 @@
 # .github/workflows/release.yaml
 
 name: Release
-on: release
+on:
+  release:
+    types: 
+      - created
 
 jobs:
   release-linux-386:
@@ -18,15 +21,15 @@ jobs:
       - name: Get dependencies
         run: |
           go mod vendor
-          GOOS=linux GOARCH=386 go install github.com/tarm/serial
-          GOOS=linux GOARCH=386 go install go.bug.st/serial
           GO111MODULE=on go get -v -t
         env:
           GO111MODULE: on
+          CGO_ENABLED: 1
       - name: compile and release
         uses: ngs/go-release.action@v1.0.1
         env:
           GO111MODULE: on
+          CGO_ENABLED: 1
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GOARCH: "386"
           GOOS: linux
@@ -44,15 +47,15 @@ jobs:
     - name: Get dependencies
       run: |
         go mod vendor
-        GOOS=linux GOARCH=amd64 go install github.com/tarm/serial
-        GOOS=linux GOARCH=amd64 go install go.bug.st/serial
         GO111MODULE=on go get -v -t
       env:
         GO111MODULE: on
+        CGO_ENABLED: 1
     - name: compile and release
       uses: ngs/go-release.action@v1.0.1
       env:
         GO111MODULE: on
+        CGO_ENABLED: 1
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GOARCH: amd64
         GOOS: linux
@@ -70,15 +73,15 @@ jobs:
     - name: Get dependencies
       run: |
         go mod vendor
-        GOOS=darwin GOARCH=386 go install github.com/tarm/serial
-        GOOS=darwin GOARCH=386 go install go.bug.st/serial
         GO111MODULE=on go get -v -t
       env:
         GO111MODULE: on
+        CGO_ENABLED: 1
     - name: compile and release
       uses: ngs/go-release.action@v1.0.1
       env:
         GO111MODULE: on
+        CGO_ENABLED: 1
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GOARCH: "386"
         GOOS: darwin
@@ -96,15 +99,15 @@ jobs:
     - name: Get dependencies
       run: |
         go mod vendor
-        GOOS=darwin GOARCH=amd64 go install github.com/tarm/serial
-        GOOS=darwin GOARCH=amd64 go install go.bug.st/serial
         GO111MODULE=on go get -v -t
       env:
         GO111MODULE: on
+        CGO_ENABLED: 1
     - name: compile and release
       uses: ngs/go-release.action@v1.0.1
       env:
         GO111MODULE: on
+        CGO_ENABLED: 1
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GOARCH: amd64
         GOOS: darwin
@@ -122,15 +125,15 @@ jobs:
     - name: Get dependencies
       run: |
         go mod vendor
-        GOOS=windows GOARCH=386 go install github.com/tarm/serial
-        GOOS=windows GOARCH=386 go install go.bug.st/serial
         GO111MODULE=on go get -v -t
       env:
         GO111MODULE: on
+        CGO_ENABLED: 1
     - name: compile and release
       uses: ngs/go-release.action@v1.0.1
       env:
         GO111MODULE: on
+        CGO_ENABLED: 1
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GOARCH: "386"
         GOOS: windows
@@ -148,15 +151,15 @@ jobs:
     - name: Get dependencies
       run: |
         go mod vendor
-        GOOS=windows GOARCH=amd64 go install github.com/tarm/serial
-        GOOS=windows GOARCH=amd64 go install go.bug.st/serial
         GO111MODULE=on go get -v -t
       env:
         GO111MODULE: on
+        CGO_ENABLED: 1
     - name: compile and release
       uses: ngs/go-release.action@v1.0.1
       env:
         GO111MODULE: on
+        CGO_ENABLED: 1
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GOARCH: amd64
         GOOS: windows
