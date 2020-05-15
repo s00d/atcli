@@ -26,7 +26,7 @@ jobs:
         uses: managedkaos/print-env@v1.0
       # - name: BUILD
       #   run: |
-      #     GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go install github.com/tarm/serial
+      #     GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CGO_ENABLED=1 go install github.com/tarm/serial
       - uses: wangyoucao577/go-release-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -34,7 +34,7 @@ jobs:
           goarch: ${{ matrix.goarch }}
           # project_path: "${{ env.CMD_PATH }}"
           build_flags: -v
-          pre_command: GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} GO111MODULE=on CGO_ENABLED=1
+          pre_command: GO111MODULE=on CGO_ENABLED=1
           ldflags: -X "main.appVersion=${{ env.APP_VERSION }}" -X "main.buildTime=${{ env.BUILD_TIME }}" -X main.gitCommit=${{ github.sha }} -X main.gitRef=${{ github.ref }}
         env:
           GO111MODULE: on
