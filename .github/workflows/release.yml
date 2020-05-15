@@ -37,4 +37,5 @@ jobs:
           GO111MODULE=on go get -v -t -d ./...
       - name: BUILD
         run: |
-          sh ./build.sh
+          chmod u+x build.sh    
+          ./build.sh

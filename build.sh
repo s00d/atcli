@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/sh
+
 #
 # GoLang cross-compile snippet for Go 1.6+ based loosely on Dave Chaney's cross-compile script:
 # http://dave.cheney.net/2012/09/08/an-introduction-to-cross-compilation-with-go
