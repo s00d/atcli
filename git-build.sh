@@ -73,7 +73,7 @@ if [ ${GOOS} == 'windows' ]; then
   BIN_FILENAME="${BIN_FILENAME}.exe"
 fi
 
-CMD="GOOS=${GOOS} GOARCH=${GOARCH} CGO_ENABLED=1 go build -o ./build/${BIN_FILENAME} $@"
+CMD="GOOS=${GOOS} GOARCH=${GOARCH} CGO_ENABLED=0 go build -o ./build/${BIN_FILENAME} $@"
 echo "${CMD}"
 eval $CMD || FAILURES="${FAILURES} ${PLATFORM}"
 
