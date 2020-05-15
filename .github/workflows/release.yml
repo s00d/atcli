@@ -17,6 +17,7 @@ jobs:
       steps:
       - name: Pre Install
         run: |
+          sudo apt-get install build-essential
           sudo apt-get install -y --no-install-recommends gcc-${GCC_V} g++-${GCC_V} gfortran-${GCC_V}
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_V} 100 \
           --slave /usr/bin/g++ g++ /usr/bin/g++-${GCC_V} \
@@ -43,6 +44,7 @@ jobs:
     steps:
     - name: Pre Install
       run: |
+        sudo apt-get install build-essential
         sudo apt-get install -y --no-install-recommends gcc-${GCC_V} g++-${GCC_V} gfortran-${GCC_V}
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_V} 100 \
         --slave /usr/bin/g++ g++ /usr/bin/g++-${GCC_V} \
@@ -69,6 +71,7 @@ jobs:
     steps:
     - name: Pre Install
       run: |
+        sudo apt-get install build-essential
         sudo apt-get install -y --no-install-recommends gcc-${GCC_V} g++-${GCC_V} gfortran-${GCC_V}
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_V} 100 \
         --slave /usr/bin/g++ g++ /usr/bin/g++-${GCC_V} \
@@ -95,6 +98,7 @@ jobs:
     steps:
     - name: Pre Install
       run: |
+        sudo apt-get install build-essential
         sudo apt-get install -y --no-install-recommends gcc-${GCC_V} g++-${GCC_V} gfortran-${GCC_V}
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_V} 100 \
         --slave /usr/bin/g++ g++ /usr/bin/g++-${GCC_V} \
@@ -121,6 +125,7 @@ jobs:
     steps:
     - name: Pre Install
       run: |
+        sudo apt-get install build-essential
         sudo apt-get install -y --no-install-recommends gcc-${GCC_V} g++-${GCC_V} gfortran-${GCC_V}
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_V} 100 \
         --slave /usr/bin/g++ g++ /usr/bin/g++-${GCC_V} \
@@ -147,6 +152,7 @@ jobs:
     steps:
     - name: Pre Install
       run: |
+        sudo apt-get install build-essential
         sudo apt-get install -y --no-install-recommends gcc-${GCC_V} g++-${GCC_V} gfortran-${GCC_V}
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_V} 100 \
         --slave /usr/bin/g++ g++ /usr/bin/g++-${GCC_V} \
