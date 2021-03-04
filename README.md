@@ -1,6 +1,6 @@
 # AT CLI
 
-it small package for ad command
+it small package for at command
 
 # USAGE
 
